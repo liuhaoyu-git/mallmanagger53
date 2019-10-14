@@ -1,16 +1,22 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import App from './App'
 //导入element
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import App from './App'
+//公共样式
+import '@/assets/css/reset.css'
+import MyServerHttp from '@/plugins/http.js'
+
 import router from './router'
 
 Vue.config.productionTip = false
 
 //使用element插件
 Vue.use(ElementUI);
+//使用自己插件
+Vue.use(MyServerHttp);
 
 /* eslint-disable no-new */
 new Vue({
