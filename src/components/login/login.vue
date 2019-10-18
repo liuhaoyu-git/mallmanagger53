@@ -44,6 +44,7 @@ export default {
           data,
           meta: { msg, status }
         } = res.data;
+        //console.log(res);
 
         if (status === 200) {
           //登录成功
