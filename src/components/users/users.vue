@@ -46,7 +46,7 @@
         <template slot-scope="scope">
           <el-switch
             class="TelSwitch"
-            disabled
+            @change="changeMgState(scope.row)"
             v-model="scope.row.mg_state"
             active-color="#13ce66"
             inactive-color="#ff4949"
@@ -68,7 +68,14 @@
             @click="editUser(scope.row)"
           ></el-button>
           <!-- 对勾 -->
-          <el-button size="mini" plain type="success" icon="el-icon-check" circle></el-button>
+          <el-button
+            size="mini"
+            plain
+            type="success"
+            icon="el-icon-check"
+            circle
+            @click="allocUser(scope.row)"
+          ></el-button>
           <!-- 删除 -->
           <el-button
             size="mini"
@@ -93,7 +100,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="pagenum"
-        :page-sizes="[1, 2, 20, 50]"
+        :page-sizes="[5, 10, 20, 50]"
         :page-size="8"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -130,13 +137,51 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+    <!-- 弹出分配用户的对话框 -->
+    <el-dialog :title="title" :visible.sync="dialogAlloUser" width="500px">
+      <el-form
+        :model="form"
+        status-icon
+        ref="form"
+        label-width="100px"
+        class="demo-ruleForm"
+        style="width:85%"
+      >
+        <el-form-item label="姓名" prop="username">
+          <!-- <el-input v-model="form.username" :disabled="disabled"></el-input> -->
+          {{form.username}}
+        </el-form-item>
+
+        <el-form-item label="当前角色" >
+          <!-- <el-input v-model="form.username" :disabled="disabled"></el-input> -->
+          <!-- {{currRoleId}} -->
+        </el-form-item>
+
+        <!-- 选择器 -->
+        <el-form-item label="要修改角色" label-width="100px">
+          <!-- select绑定的数据的值 跟 option的valu值一样 就会显示当前的label -->
+          <el-select v-model="currRoleId" placeholder="请选择">
+            <!-- 数字 :value="-1" 加冒号  字符串 value="-1" 不加冒号-->
+            <el-option label="请选择" :value="-1"></el-option>
+            <el-option :label="item.roleName" :value="item.id" v-for="(item,i) in roles" :key="i"></el-option>
+          </el-select>
+          <!-- v-for 哪个是键名 哪个是键值 -->
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="dialogAlloUser = false">取消</el-button>
+          <el-button @click="alloUserButton">确定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </el-card>
 </template>
 
 <script>
-import mix from "./user"
+import mix from "./user";
 export default {
-  mixins:[mix]
+  mixins: [mix]
 };
 </script>
 
